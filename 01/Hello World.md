@@ -1,3 +1,5 @@
+!주의: BlockQuote는 개인적인 감상을 적은 것입니다.
+
 # 1강 Hello World - [link](https://www.youtube.com/watch?v=1OzBh2Uuj2s)
 ## 간단한 개발 구축 설명
 - 코틀린은 JetBrain사에서 만든 언어이므로 JetBrain사의 IDE를 사용한다. 무료버전인 [IntelliJ IDEA CE](https://www.jetbrains.com/ko-kr/idea/download/#section=mac)를 받아 설치하자.
@@ -10,7 +12,7 @@
   - JDK는 **22년 06월 기준**, Android를 같이하겠다면 15, Kotlin만 공부하겠다면 17로 설정한다.
 ## 코틀린 이해
 - 현재 시점에서 코틀린 전용 가상머신이 존재하지 않는다. (JetBrain사 인터뷰에서 계획은 있다함)
-    - 코틀린 바이트코드가 코틀린 컴파일러로 의해 만들어지면, 원하는 플랫폼으로 다시 한번 번역이 됨.
+    - 코틀린 바이트코드가 코틀린 컴파일러에 의해 만들어지면, 이를 이용해 원하는 플랫폼으로 다시 한번 번역이 됨.
     - 플랫폼 위에 개별로 존재. 플랫폼을 고려하지는 않음. 단순 번역.
         - JVM : 가장 완벽한 번역 및 최대한 관련 기능 제공.
         - JS : 컴파일이 느리지만 리플렉션을 제외하면 대부분의 기능 제공.
@@ -28,7 +30,7 @@
 - 번역 대상이 되는 플랫폼에 유리한 형태로 알아서 번역됨.
 - 코틀린의 관심사는 **불변성을 갖는 형**인지 아닌지이다.
 - 단, 제네릭 배열과 원시형 배열(java에서 [int]와 같은)을 분리 / 호환시키기 위한 원시형 배열을 별도 제공.
-> siwft도 그러하지만 불변에 집착하는 것은 최신 언어들의 특징인 것 같다.
+> swift도 그러하지만 불변에 집착하는 것은 최신 언어들의 특징인 것 같다.
 ## 코틀린의 내장형(Built-In Type)
 - Any: 모든 형의 부모.
 - Nothing: 모든 형의 자식이자 제어흐름의 종결을 형으로 표현.
@@ -42,28 +44,28 @@
     - JS에서 function에 return 문을 작성하지 않으면 자동으로 `return undefined` 와 동일 시 되는 것과 같이 kotlin에서 return을 작성하지 않으면 Unit이 반환됨.
 - Throwable: 모든 예외의 부모
 - Funcion: 함수를 나타내는 형
-    - java의 람다를 함수라 생각하면 안됨. interface의 익명 객체임.
+    - java의 람다를 함수라 생각하면 안됨. java의 람다는 interface의 익명 객체임.
     - kotlin 언어 차원에서는 함수형이라는 것이 존재한다.
 - KClass, KCallable, KProperty, KFunction, KType: 리플레션 타입
     - kotlin은 self description이 되는 언어. reflection의 도움없이 처음부터 언어가 언어를 구성하는 요소를 객체화함.
-    - 코드를 parsing 하면, [Abstract Syntax Tree (AST)](https://www.geeksforgeeks.org/abstract-syntax-tree-ast-in-java/)가 생기고, runtime 객체로 잡히기 때문에 사용 가능함.
-    - kotlin은 2단계(kotlin 컴파일 후 플랫폼 컴파일) 컴파일을 하기 때문에 그냥 사용할 수 있임. 순서를 지키지 않아도 됨.
+    - reflection은 코드를 parsing 하면, [Abstract Syntax Tree (AST)](https://www.geeksforgeeks.org/abstract-syntax-tree-ast-in-java/)가 생기고, runtime 객체로 잡히기 때문에 사용 가능함.
+    - kotlin은 2단계(kotlin 컴파일 후 플랫폼 컴파일) 컴파일을 하기 때문에 그냥 사용할 수 있임. 심지어 순서를 지키지 않아도 됨.
     > 이건 java의 reflection으로 뭔가를 처리해보면 이게 얼마나 좋은지 알 수 있다. 내 지식의 한계일 수 도 있지만, swift에 Mirror를 통해 일부 기능을 지원하지만, 동일하게 구현하겠다면 Objective-C쪽 도움을 받아야 한다.
 
 ---
 ## Calculator
 여기에서부터 일반적인 개발 내용으로 전개. 다양한 개발의 베이스 지식이 소개됨.
 - 뭔가 다양한 조건이 생길 수 있는 경우라면, accept list(allow list, white list) 스타일로 개발할 것.
-    - 이 방에는 누구누구는 못들어와. 라는 스타일로 개발을 하면 안됨.
+    - *이 방에는 누구누구는 못 들어와* 라는 스타일로 개발을 하면 안됨.
     - 이유 - 그 누구누구가 늘어나기 때문에 관리하기가 어렵다.
-    - 효과 - accept list를 사용하면 로직이 짧아진다. 예외가 발생하지 않는다. 처음부터 정한 list 밖에 로직이 작동하지 않음을 보장하기 때문.
+    - 효과 - accept list를 사용하면 로직이 짧아진다. 예외가 발생하지 않는다. 처음부터 정한 list 일 때만 로직이 작동함을 보장하기 때문.
     - 반대어 - deny, black list
 - val은 값(value), var는 변수(variable), const val은 상수(constant)
 - 형 지정시, 변수 식별자(identifier) 뒤에 :과 함께 작성한다
     - 이유 - 형 지정이 타입추론으로 작성하지 않아도 되는 옵셔널이기 때문. (java 처럼 앞에 형이 있다면 생략이 될 수 없을 것이다.)
 - kotlin의 형추정 방식
     - max upper bound: 이리저리 형추정을 해보았는데 모호하면 최상위 형으로 추정. 즉, Any가 되어 버린다.
-    - max upper bound로 가버리기 때문에 모호해질 것 같으면 형을 지정할 것.
+    - 기본이 max upper bound로 가버리기 때문에 모호해질 것 같으면 형을 지정할 것.
 - 형 추론은 머신 파워를 이용하기 때문에, 모두 형 지정을 하면 컴파일이 빨라진다.
 - 리터럴이란?
     - 더 이상 분해할 수 없는 값의 표현. 그 언어에서 어떤 값을 표현할 때, 이 표현말고는 표현할 방법이 없는 것.
