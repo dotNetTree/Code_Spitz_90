@@ -10,7 +10,7 @@
   - Kotlin만 공부하겠다 하면 Console Application을 선택한다.
   - Build system은 Gradle Kotlin을 선택한다.
   - JDK는 **22년 06월 기준**, Android를 같이하겠다면 15, Kotlin만 공부하겠다면 17로 설정한다.
-  > 어차피 Kotlin만 공부한다면, Console Appliication 만으로 충분할 듯. Build System은 추후 안드로이드 개발 등을 생각해보면 구글 검색 시 가장 많이 노출되는 Gradle을 선택하는게 이러울 것 같다.
+  > 어차피 Kotlin만 공부한다면, Console Appliication 만으로 충분할 듯. Build System은 추후 안드로이드 개발 등을 생각해보면 구글 검색 시 가장 많이 노출되는 Gradle을 선택하는게 이로울 것 같다.
 ## Kotlin 이해
 - 현재 시점에서 Kotlin 전용 가상머신이 존재하지 않는다. (JetBrain사 인터뷰에서 계획은 있다함)
     - Kotlin 바이트코드가 Kotlin 컴파일러에 의해 만들어지면, 이를 이용해 원하는 플랫폼으로 다시 한번 번역이 됨.
@@ -44,7 +44,7 @@
     - procedure와 function의 차이가 발생함. procedure를 없애기로 맘먹은 Kotlin은 Unit을 반환
     - JS에서 function에 return 문을 작성하지 않으면 자동으로 `return undefined` 와 동일 시 되는 것과 같이 Kotlin에서 return을 작성하지 않으면 Unit이 반환됨.
 - Throwable: 모든 예외의 부모
-- Funcion: 함수를 나타내는 형
+- Function: 함수를 나타내는 형
     - java의 람다를 함수라 생각하면 안됨. java의 람다는 interface의 익명 객체임.
     - Kotlin 언어 차원에서는 함수형이라는 것이 존재한다.
 - KClass, KCallable, KProperty, KFunction, KType: 리플레션 타입
