@@ -10,7 +10,7 @@
   - Kotlin만 공부하겠다 하면 Console Application을 선택한다.
   - Build system은 Gradle Kotlin을 선택한다.
   - JDK는 **22년 06월 기준**, Android를 같이하겠다면 15, Kotlin만 공부하겠다면 17로 설정한다.
-  > 어차피 Kotlin만 공부한다면, Console Appliication 만으로 충분할 듯. Build System은 추후 안드로이드 개발 등을 생각해보면 구글 검색 시 가장 많이 노출되는 Gradle을 선택하는게 이러울 것 같다.
+  > 어차피 Kotlin만 공부한다면, Console Appliication 만으로 충분할 듯. Build System은 추후 안드로이드 개발 등을 생각해보면 구글 검색 시 가장 많이 노출되는 Gradle을 선택하는게 이로울 것 같다.
 ## Kotlin 이해
 - 현재 시점에서 Kotlin 전용 가상머신이 존재하지 않는다. (JetBrain사 인터뷰에서 계획은 있다함)
     - Kotlin 바이트코드가 Kotlin 컴파일러에 의해 만들어지면, 이를 이용해 원하는 플랫폼으로 다시 한번 번역이 됨.
