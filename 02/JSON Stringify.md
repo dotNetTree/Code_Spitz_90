@@ -94,8 +94,27 @@ Kotlin으로 객체의 JSON Stringify를 구현하면서 Kotlin의 함수에 대
             - 함수형 언어이거나 expression을 강화하려는 언어는 statement expression으로 바꾸려한다. (대표적으로 ruby는 statement가 없다)
             - 사실 runtime에 유연성을 확보한다는 것도 결국 statement를 expression으로 고치는 과정이다. 디자인 패턴이던 함수형이든 수단이 뭐가 되든 결국 statement 제거인 것이다.
         - 2)의 코드의 의미는 builder append 식의 인자에 if else 식이 들어간 것이다.
+    - 고려사항 3을 처리하기 위해서 [Iterator\<T\>의 joinTo](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/join-to.html)를 사용한다. 
+         ```kotlin
+        fun <T: Any> stringify(target: T): String {
+            val builder = StringBuilder()
+            builder.append('{')
+            target::class.members
+                .filterIsInstance<KProperty<*>>()
+                .joinTo(builder, ",", "{", "}") {
+                    val value = it.getter.call(target)
+                    "${jsonString(it.name)}:${if (value is String) jsonString(value) else value}"
+                }
+                .toString()
+            builder.append('}')
+            return "$builder"
+        }
+        private fun jsonString(v: String) = """"${v.replace("\"","\\\"")}""""
+        ```
+        - 여기까지 하면 `{"a":3,"b":"abc"}`가 출력된다. 원하는 결과가 나왔다.
+        - 하지만 JSON stringify는 객체 안에 객체, 그 안에 리스트를 순회하면서 만들어내는 것이 백미, 이제 List와 Object도 고려해보자
 
-    25분까지 내용
+    31분까지 내용
 
     
 
