@@ -29,17 +29,28 @@ Kotlin으로 객체의 JSON Stringify를 구현하면서 Kotlin의 함수에 대
     - `KCallable`: 모든 호출 가능 요소.
         - `KProperty`: 속성
         - `KFunction`: 함수, 메소드 
-    - taget의 정보를 얻어내기 위한 코드는 다음과 같이 된다.
-    ```kotlin 
-    fun <T: Any> stringify(target: T): String {
-        target::class.members.forEach {
-            when(it) {
-                is KProperty<*>-> {
-
+    - class의 property 정보로 stringify를 해야하므로 taget의 KProperty만 바라보면 된다.
+        ```kotlin 
+        fun <T: Any> stringify(target: T): String {
+            target::class.members
+                .filterIsInstance<KProperty<*>>()
+                .forEach { it ->    // <- it은 KProperty<*>
+            
                 }
-            }
+            return ""
         }
-        return ""
-    }
-    ```
-    - 
+        ```
+    - stringify는 property 정보를 얻어와 string을 계속 붙여야 하기 때문에 StringBuilder를 이용한다.
+        ```kotlin
+        fun <T: Any> stringify(target: T): String {
+            val builder = StringBuilder()
+            builder.append('{')
+            target::class.members
+                .filterIsInstance<KProperty<*>>()
+                .forEach { it ->    // <- it은 KProperty<*>
+            
+                }
+            builder.append('}')
+            return "$builder"
+        }
+        ```
