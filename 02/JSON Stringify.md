@@ -48,9 +48,60 @@ Kotlin으로 객체의 JSON Stringify를 구현하면서 Kotlin의 함수에 대
             target::class.members
                 .filterIsInstance<KProperty<*>>()
                 .forEach { it ->    // <- it은 KProperty<*>
-            
+                    builder.append(it.name, ':')
+                    val value = it.getter.call(target)
+                    builder.append(value, ',')
+                }
+            builder.append('}')
+            return "$builder"   // <--- 1)
+        }
+
+        class Json0(val a: Int, val b: String)
+
+        func main(args: Array<String>) {
+            print(stringify(Json(3, "abc")))
+        }
+        ```
+        - 실제 출력결과는 우리가 원하는 `{"a": 3,"b":"abc"}` 형태가 아닌 다음과 같이된다. `{a:3,b:abc,}` 이걸 차근차근 고쳐야 한다.
+            - *고려사항 1* - 문자열이면 감싸는 따옴표를 붙여야 한다.
+            - *고려사항 2* - 문자열 안에 따옴표는 \"로 변경
+            - *고려사항 3* - 마지막 요소는 컴마를 제거
+        > 1)을 잘보면 string templete을 사용하고 있다. `"$변수명"` 인 경우 변수의 toString()을 자동으로 호출한다. 이는 swift에서 string templete 사용시 변수의 description()을 자동으로 호출하는 것과 같다.
+    - 위 고려사항 1, 2를 처리하기 위해 jsonString 작성한다.
+        ```kotlin
+        fun <T: Any> stringify(target: T): String {
+            val builder = StringBuilder()
+            builder.append('{')
+            target::class.members
+                .filterIsInstance<KProperty<*>>()
+                .forEach { it ->    // <- it은 KProperty<*>
+                    builder.append(jsonString(it.name), ':')
+                    val value = it.getter.call(target)
+                    builder.append(
+                        if (value is String) jsonString(value) else value,  // <--- 2)
+                        ','
+                    )
                 }
             builder.append('}')
             return "$builder"
         }
+        private fun jsonString(v: String) = """"${v.replace("\"","\\\"")}""""
         ```
+        - 여기까지 하면 `{"a":3,"b":"abc",}`가 출력된다.
+        - 2)의 if는 문(statment)이 아닌 식(expression)으로 동작할 수 있다. 단, 조건이 있는데 if도 값을 return 해야하고 else도 값을 return 해야 한다. 같은 방식으로 when도 동일하게 동작할 수 있다. 모든 케이스에 값을 return하고 else도 값을 return 하면 된다.
+            - 대부분의 ABC를 계승한 대부분의 개발 언어들은 if를 문(statment)로 인식한다.
+            - statement 컴파일을 하면 cpu 등에 내리는 명령어로 바뀌며, expression은 메모리에 할당되는 값으로 바뀐다.
+            - 함수형 언어이거나 expression을 강화하려는 언어는 statement expression으로 바꾸려한다. (대표적으로 ruby는 statement가 없다)
+            - 사실 runtime에 유연성을 확보한다는 것도 결국 statement를 expression으로 고치는 과정이다. 디자인 패턴이던 함수형이든 수단이 뭐가 되든 결국 statement 제거인 것이다.
+        - 2)의 코드의 의미는 builder append 식의 인자에 if else 식이 들어간 것이다.
+
+    25분까지 내용
+
+    
+
+        
+
+
+    
+
+       
