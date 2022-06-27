@@ -44,7 +44,7 @@
     - procedure와 function의 차이가 발생함. procedure를 없애기로 맘먹은 Kotlin은 Unit을 반환
     - JS에서 function에 return 문을 작성하지 않으면 자동으로 `return undefined` 와 동일 시 되는 것과 같이 Kotlin에서 return을 작성하지 않으면 Unit이 반환됨.
 - Throwable: 모든 예외의 부모
-- Funcion: 함수를 나타내는 형
+- Function: 함수를 나타내는 형
     - java의 람다를 함수라 생각하면 안됨. java의 람다는 interface의 익명 객체임.
     - Kotlin 언어 차원에서는 함수형이라는 것이 존재한다.
 - KClass, KCallable, KProperty, KFunction, KType: 리플레션 타입
